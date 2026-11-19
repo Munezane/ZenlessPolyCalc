@@ -1,5 +1,6 @@
 using System.Drawing.Printing;
 using System.Windows.Forms.VisualStyles;
+using ZenlessPolyCalc.Config;
 
 namespace ZenlessPolyCalc
 {
@@ -15,6 +16,7 @@ namespace ZenlessPolyCalc
 
             Application.SetColorMode(SystemColorMode.Dark);
             LoadSavedSettings();
+            RefreshWishList();
         }
         private void SetMaxNumericValues()
         {
@@ -59,6 +61,53 @@ namespace ZenlessPolyCalc
             PolychromeResultDTO results = polychromeManager.CalculateResults(configManager);
             lblFinalPolysResult.Text = results.TotalPolychromes.ToString();
             lblFinalPullsResult.Text = results.TotalPulls.ToString();
+        }
+
+        private void btnAddToWishlist_Click(object sender, EventArgs e)
+        {
+            OpenWishlistForm();
+        }
+        private void OpenWishlistForm(WishlistItem? editItem = null)
+        {
+            frmWishlist AddWishlist = new frmWishlist(configManager, this, editItem);
+            AddWishlist.ShowDialog();
+        }
+        public void RefreshWishList()
+        {
+            lstWishlist.Items.Clear();
+            foreach (var wishlistItem in configManager.WishlistItems)
+            {
+                ListViewItem listViewItem = new ListViewItem();
+                listViewItem.Name = wishlistItem.ID;
+                listViewItem.Text = wishlistItem.CharacterName;
+                if (wishlistItem.IsWeapon)
+                {
+                    listViewItem.Text += "'s (WEAPON)";
+                }
+                //TO DO! HANDLE REST
+                if (!string.IsNullOrWhiteSpace(wishlistItem.ImageLocation))
+                {
+                    if (lstWishlist.LargeImageList == null)
+                    {
+                        lstWishlist.LargeImageList = new ImageList();
+                    }
+                    lstWishlist.LargeImageList.Images.Add(wishlistItem.ID, Image.FromFile(wishlistItem.ImageLocation));
+                    listViewItem.ImageKey = wishlistItem.ID;
+                }
+              
+                lstWishlist.Items.Add(listViewItem);
+            }
+        }
+
+        private void lstWishlist_DoubleClick(object sender, EventArgs e)
+        {
+            if (lstWishlist.SelectedItems.Count > 0)
+            {
+                ListViewItem selectedItem = lstWishlist.SelectedItems[0]; //selection mode is single so can't have multiple selected
+                WishlistItem? selectedWishlistItem = configManager.WishlistItems.SingleOrDefault(x => x.ID == selectedItem.Name);
+                OpenWishlistForm(selectedWishlistItem);
+
+            }
         }
     }
 }

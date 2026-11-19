@@ -71,10 +71,12 @@
             // 
             lstWishlist.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             lstWishlist.Location = new Point(782, 44);
+            lstWishlist.MultiSelect = false;
             lstWishlist.Name = "lstWishlist";
             lstWishlist.Size = new Size(284, 551);
             lstWishlist.TabIndex = 2;
             lstWishlist.UseCompatibleStateImageBehavior = false;
+            lstWishlist.DoubleClick += lstWishlist_DoubleClick;
             // 
             // dtPatchEndDate
             // 
@@ -244,6 +246,7 @@
             btnAddToWishlist.TabIndex = 22;
             btnAddToWishlist.Text = "Add";
             btnAddToWishlist.UseVisualStyleBackColor = true;
+            btnAddToWishlist.Click += btnAddToWishlist_Click;
             // 
             // frmMain
             // 
