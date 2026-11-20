@@ -31,6 +31,9 @@
             components = new System.ComponentModel.Container();
             lblEndDate = new Label();
             lstWishlist = new ListView();
+            cmsWishlistItemRightClick = new ContextMenuStrip(components);
+            contextEdit = new ToolStripMenuItem();
+            contextDelete = new ToolStripMenuItem();
             dtPatchEndDate = new DateTimePicker();
             lblCurrentPolys = new Label();
             lblCurrentTapes = new Label();
@@ -53,6 +56,7 @@
             btnCalcFinalPolys = new Button();
             ttCurrentTapes = new ToolTip(components);
             btnAddToWishlist = new Button();
+            cmsWishlistItemRightClick.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numCurrentTapes).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numCurrentPolys).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numRemainingEventPolys).BeginInit();
@@ -70,13 +74,35 @@
             // lstWishlist
             // 
             lstWishlist.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            lstWishlist.ContextMenuStrip = cmsWishlistItemRightClick;
+            lstWishlist.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lstWishlist.Location = new Point(782, 44);
             lstWishlist.MultiSelect = false;
             lstWishlist.Name = "lstWishlist";
             lstWishlist.Size = new Size(284, 551);
             lstWishlist.TabIndex = 2;
             lstWishlist.UseCompatibleStateImageBehavior = false;
+            lstWishlist.View = View.List;
             lstWishlist.DoubleClick += lstWishlist_DoubleClick;
+            // 
+            // cmsWishlistItemRightClick
+            // 
+            cmsWishlistItemRightClick.Items.AddRange(new ToolStripItem[] { contextEdit, contextDelete });
+            cmsWishlistItemRightClick.Name = "cmsWishlistItemRightClick";
+            cmsWishlistItemRightClick.Size = new Size(108, 48);
+            cmsWishlistItemRightClick.ItemClicked += cmsWishlistItemRightClick_ItemClicked;
+            // 
+            // contextEdit
+            // 
+            contextEdit.Name = "contextEdit";
+            contextEdit.Size = new Size(107, 22);
+            contextEdit.Text = "Edit";
+            // 
+            // contextDelete
+            // 
+            contextDelete.Name = "contextDelete";
+            contextDelete.Size = new Size(107, 22);
+            contextDelete.Text = "Delete";
             // 
             // dtPatchEndDate
             // 
@@ -277,6 +303,7 @@
             Controls.Add(lblEndDate);
             Name = "frmMain";
             Text = "Zenless Polychrome Calculator";
+            cmsWishlistItemRightClick.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numCurrentTapes).EndInit();
             ((System.ComponentModel.ISupportInitialize)numCurrentPolys).EndInit();
             ((System.ComponentModel.ISupportInitialize)numRemainingEventPolys).EndInit();
@@ -311,5 +338,8 @@
         private Button btnCalcFinalPolys;
         private ToolTip ttCurrentTapes;
         private Button btnAddToWishlist;
+        private ContextMenuStrip cmsWishlistItemRightClick;
+        private ToolStripMenuItem contextEdit;
+        private ToolStripMenuItem contextDelete;
     }
 }

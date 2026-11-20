@@ -91,15 +91,23 @@ namespace ZenlessPolyCalc
                     {
                         lstWishlist.LargeImageList = new ImageList();
                     }
+                    if (lstWishlist.SmallImageList == null)
+                    {
+                        lstWishlist.SmallImageList = new ImageList();
+                    }
                     lstWishlist.LargeImageList.Images.Add(wishlistItem.ID, Image.FromFile(wishlistItem.ImageLocation));
+                    lstWishlist.SmallImageList.Images.Add(wishlistItem.ID, Image.FromFile(wishlistItem.ImageLocation));
                     listViewItem.ImageKey = wishlistItem.ID;
                 }
-              
                 lstWishlist.Items.Add(listViewItem);
             }
         }
 
         private void lstWishlist_DoubleClick(object sender, EventArgs e)
+        {
+            EditSelectedWishlistItem();
+        }
+        private void EditSelectedWishlistItem()
         {
             if (lstWishlist.SelectedItems.Count > 0)
             {
@@ -107,6 +115,43 @@ namespace ZenlessPolyCalc
                 WishlistItem? selectedWishlistItem = configManager.WishlistItems.SingleOrDefault(x => x.ID == selectedItem.Name);
                 OpenWishlistForm(selectedWishlistItem);
 
+            }
+        }
+        private void DeleteSelectedWishlistItem()
+        {
+            
+            if (lstWishlist.SelectedItems.Count > 0)
+            {
+                ListViewItem selectedItem = lstWishlist.SelectedItems[0]; //selection mode is single so can't have multiple selected
+                WishlistItem? selectedWishlistItem = configManager.WishlistItems.SingleOrDefault(x => x.ID == selectedItem.Name);
+                if (selectedWishlistItem != null)
+                {
+                    //confirmation!
+                    DialogResult result = MessageBox.Show($"Are you sure you want to delete {selectedWishlistItem.CharacterName}?", "Confirm Delete", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
+                    {
+                        configManager.WishlistItems.Remove(configManager.WishlistItems.Where(x=> x.ID == selectedWishlistItem.ID).SingleOrDefault());
+                        configManager.SaveWishlistItems(configManager.WishlistItems);
+                        RefreshWishList();
+                    }
+                }  
+            }
+        }
+        private void cmsWishlistItemRightClick_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem != null && lstWishlist.SelectedItems.Count > 0)
+            {
+                switch (e.ClickedItem.Name)
+                {
+                    case "contextEdit":
+                        EditSelectedWishlistItem();
+                        break;
+                    case "contextDelete":
+                        DeleteSelectedWishlistItem();
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }

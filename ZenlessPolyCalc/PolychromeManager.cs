@@ -12,7 +12,7 @@ namespace ZenlessPolyCalc
         private const short DeadlyAssaultCyclesPerPatch = 3;
         private const short DeadlyAssaultPolychromesPerCycle = 300;
         private const short DailyPolychromes = 60;
-        private const short WeeklyPolychromes = 160;
+        private const short WeeklyPolychromes = 240;//160 from hollow zero + 60 from weekly errands
 
         public PolychromeResultDTO CalculateResults(ConfigManager configManager)
         {
