@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             lblName = new Label();
             lblWeapon = new Label();
             lblImage = new Label();
@@ -40,6 +41,10 @@
             btnCancel = new Button();
             openImage = new OpenFileDialog();
             btnSelectImage = new Button();
+            lblBannerType = new Label();
+            chkNormalBanner = new CheckBox();
+            chkDiscountBanner = new CheckBox();
+            ttBannerType = new ToolTip(components);
             ((System.ComponentModel.ISupportInitialize)imgCharacterImage).BeginInit();
             SuspendLayout();
             // 
@@ -115,7 +120,7 @@
             // btnSave
             // 
             btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSave.Location = new Point(229, 442);
+            btnSave.Location = new Point(225, 515);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(75, 23);
             btnSave.TabIndex = 10;
@@ -126,7 +131,7 @@
             // btnCancel
             // 
             btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnCancel.Location = new Point(310, 442);
+            btnCancel.Location = new Point(306, 515);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(75, 23);
             btnCancel.TabIndex = 11;
@@ -149,11 +154,45 @@
             btnSelectImage.UseVisualStyleBackColor = true;
             btnSelectImage.Click += btnSelectImage_Click;
             // 
+            // lblBannerType
+            // 
+            lblBannerType.AutoSize = true;
+            lblBannerType.Location = new Point(24, 435);
+            lblBannerType.Name = "lblBannerType";
+            lblBannerType.Size = new Size(88, 15);
+            lblBannerType.TabIndex = 13;
+            lblBannerType.Text = "Banner Type (?)";
+            // 
+            // chkNormalBanner
+            // 
+            chkNormalBanner.AutoSize = true;
+            chkNormalBanner.Location = new Point(118, 435);
+            chkNormalBanner.Name = "chkNormalBanner";
+            chkNormalBanner.Size = new Size(66, 19);
+            chkNormalBanner.TabIndex = 14;
+            chkNormalBanner.Text = "Normal";
+            chkNormalBanner.UseVisualStyleBackColor = true;
+            chkNormalBanner.CheckedChanged += chkNormalBanner_CheckedChanged;
+            // 
+            // chkDiscountBanner
+            // 
+            chkDiscountBanner.AutoSize = true;
+            chkDiscountBanner.Location = new Point(214, 434);
+            chkDiscountBanner.Name = "chkDiscountBanner";
+            chkDiscountBanner.Size = new Size(73, 19);
+            chkDiscountBanner.TabIndex = 15;
+            chkDiscountBanner.Text = "Discount";
+            chkDiscountBanner.UseVisualStyleBackColor = true;
+            chkDiscountBanner.CheckedChanged += chkDiscountBanner_CheckedChanged;
+            // 
             // frmWishlist
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(397, 477);
+            ClientSize = new Size(393, 550);
+            Controls.Add(chkDiscountBanner);
+            Controls.Add(chkNormalBanner);
+            Controls.Add(lblBannerType);
             Controls.Add(btnSelectImage);
             Controls.Add(btnCancel);
             Controls.Add(btnSave);
@@ -190,5 +229,9 @@
         private Button btnCancel;
         private OpenFileDialog openImage;
         private Button btnSelectImage;
+        private Label lblBannerType;
+        private CheckBox chkNormalBanner;
+        private CheckBox chkDiscountBanner;
+        private ToolTip ttBannerType;
     }
 }

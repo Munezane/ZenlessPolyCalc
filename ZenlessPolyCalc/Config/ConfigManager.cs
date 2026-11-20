@@ -21,6 +21,10 @@ namespace ZenlessPolyCalc.Config
         private const string PatchEndDateFormat = "yyyy-MM-dd";//we don't care about time
         private const string WishlistItemsSectionName = "WishlistItems";
         public List<WishlistItem> WishlistItems = new List<WishlistItem>();
+        public int CurrentWeaponPity { get; set; } = 0;
+        public int CurrentCharacterPity { get; set; } = 0;
+        public bool WonLastWeaponRateUp { get; set; } = false;
+        public bool WonLastCharacterRateUp { get; set; } = false;
 
         public void SaveConfig()
         {
@@ -32,13 +36,10 @@ namespace ZenlessPolyCalc.Config
             KeyValueConfigurationElement kvpRemainingEventPolychromes = app.Settings["RemainingEventPolychromes"];
             KeyValueConfigurationElement kvpAssumeShiyuARank = app.Settings["AssumeShiyuARank"];
             KeyValueConfigurationElement kvpPatchEndDate= app.Settings["PatchEndDate"];
-
-
-
-
-            ConfigurationSection WishlistSection = config.GetSection("WishlistItems");
-           // var items = WishlistSection["items"];
-
+            KeyValueConfigurationElement kvpCurrentWeaponPity = app.Settings["CurrentWeaponPity"];
+            KeyValueConfigurationElement kvpCurrentCharacterPity = app.Settings["CurrentCharacterPity"];
+            KeyValueConfigurationElement kvpWonLastWeaponRateUp = app.Settings["WonLastWeaponRateUp"];
+            KeyValueConfigurationElement kvpWonLastCharacterRateUp = app.Settings["WonLastCharacterRateUp"];
 
 
             kvpCurrentPolychromes.Value = CurrentPolychromes.ToString();
@@ -46,7 +47,12 @@ namespace ZenlessPolyCalc.Config
             kvpRemainingEventPolychromes.Value = RemainingEventPolychromes.ToString();
             kvpAssumeShiyuARank.Value = AssumeShiyuARank.ToString();
             kvpPatchEndDate.Value = PatchEndDate.ToString(PatchEndDateFormat);
+            kvpCurrentWeaponPity.Value = CurrentWeaponPity.ToString();
+            kvpCurrentCharacterPity.Value = CurrentCharacterPity.ToString();
+            kvpWonLastWeaponRateUp.Value = WonLastWeaponRateUp.ToString();
+            kvpWonLastCharacterRateUp.Value = WonLastCharacterRateUp.ToString();
 
+            //wishlist items saved separately
 
             config.Save(ConfigurationSaveMode.Modified);
         }
@@ -62,6 +68,10 @@ namespace ZenlessPolyCalc.Config
             KeyValueConfigurationElement kvpRemainingEventPolychromes = app.Settings["RemainingEventPolychromes"];
             KeyValueConfigurationElement kvpAssumeShiyuARank = app.Settings["AssumeShiyuARank"];
             KeyValueConfigurationElement kvpPatchEndDate = app.Settings["PatchEndDate"];
+            KeyValueConfigurationElement kvpCurrentWeaponPity = app.Settings["CurrentWeaponPity"];
+            KeyValueConfigurationElement kvpCurrentCharacterPity = app.Settings["CurrentCharacterPity"];
+            KeyValueConfigurationElement kvpWonLastWeaponRateUp = app.Settings["WonLastWeaponRateUp"];
+            KeyValueConfigurationElement kvpWonLastCharacterRateUp = app.Settings["WonLastCharacterRateUp"];
             //save default values if config file is empty, just to make actual loading more uniform
             bool blnNeedSaveConfig = false;
             if (kvpCurrentPolychromes == null)
@@ -89,6 +99,27 @@ namespace ZenlessPolyCalc.Config
                 app.Settings.Add("PatchEndDate", PatchEndDate.ToString(PatchEndDateFormat));
                 blnNeedSaveConfig = true;
             }
+            if (kvpCurrentWeaponPity == null)
+            {
+                app.Settings.Add("CurrentWeaponPity", CurrentWeaponPity.ToString());
+                blnNeedSaveConfig = true;
+            }
+            if (kvpCurrentCharacterPity == null)
+            {
+                app.Settings.Add("CurrentCharacterPity", CurrentCharacterPity.ToString());
+                blnNeedSaveConfig = true;
+            }
+            if (kvpWonLastWeaponRateUp == null)
+            {
+                app.Settings.Add("WonLastWeaponRateUp", WonLastWeaponRateUp.ToString());
+                blnNeedSaveConfig = true;
+            }
+            if (kvpWonLastCharacterRateUp == null)
+            {
+                app.Settings.Add("WonLastCharacterRateUp", WonLastCharacterRateUp.ToString());
+                blnNeedSaveConfig = true;
+            }
+
             if (blnNeedSaveConfig)
             {
                 config.Save(ConfigurationSaveMode.Modified);
@@ -124,6 +155,26 @@ namespace ZenlessPolyCalc.Config
             if (!string.IsNullOrWhiteSpace(savedPatchEndDate))
             {
                 PatchEndDate = DateTime.Parse(savedPatchEndDate, new DateTimeFormat(PatchEndDateFormat).FormatProvider);
+            }
+            string savedCurrentWeaponPity = app.Settings["CurrentWeaponPity"]?.Value;
+            if (!string.IsNullOrWhiteSpace(savedCurrentWeaponPity))
+            {
+                CurrentWeaponPity = int.Parse(savedCurrentWeaponPity);
+            }
+            string savedCurrentCharacterPity = app.Settings["CurrentCharacterPity"]?.Value;
+            if (!string.IsNullOrWhiteSpace(savedCurrentCharacterPity))
+            {
+                CurrentCharacterPity = int.Parse(savedCurrentCharacterPity);
+            }
+            string savedWonLastWeaponRateUp = app.Settings["WonLastWeaponRateUp"]?.Value;
+            if (!string.IsNullOrWhiteSpace(savedWonLastWeaponRateUp))
+            {
+                WonLastWeaponRateUp = bool.Parse(savedWonLastWeaponRateUp);
+            }
+            string savedWonLastCharacterRateUp = app.Settings["WonLastCharacterRateUp"]?.Value;
+            if (!string.IsNullOrWhiteSpace(savedWonLastCharacterRateUp))
+            {
+                WonLastCharacterRateUp = bool.Parse(savedWonLastCharacterRateUp);
             }
             WishlistItems = LoadWishlistItems();
         }

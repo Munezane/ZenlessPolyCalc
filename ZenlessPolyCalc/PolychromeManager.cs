@@ -13,8 +13,13 @@ namespace ZenlessPolyCalc
         private const short DeadlyAssaultPolychromesPerCycle = 300;
         private const short DailyPolychromes = 60;
         private const short WeeklyPolychromes = 240;//160 from hollow zero + 60 from weekly errands
+        private ConfigManager configManager;
+        public PolychromeManager(ConfigManager ConfigManager)
+        {
+            configManager = ConfigManager;
+        }
 
-        public PolychromeResultDTO CalculateResults(ConfigManager configManager)
+        public PolychromeResultDTO CalculateResults()
         {
             PolychromeResultDTO results = new PolychromeResultDTO();
             //get what we currently have
@@ -53,6 +58,48 @@ namespace ZenlessPolyCalc
 
 
             return results;
+        }
+
+        public int PullsNeededForWishlistItem(WishlistItem wishlist)
+        {
+            int pullsNeeded = 0;
+            if (wishlist.NormalBanner)
+            {
+                if (wishlist.IsWeapon)
+                {
+                    pullsNeeded = 160;
+                    if (!configManager.WonLastWeaponRateUp) //if you lost the pity then you're guarranteed on next S rank
+                    {
+                        pullsNeeded = pullsNeeded / 2;
+                    }
+                    pullsNeeded -= configManager.CurrentWeaponPity;
+                }
+                else
+                {
+                    pullsNeeded = 180;
+                    if (!configManager.WonLastCharacterRateUp) //if you lost the pity then you're guarranteed on next S rank
+                    {
+                        pullsNeeded = pullsNeeded / 2;
+                    }
+                    pullsNeeded -= configManager.CurrentCharacterPity;
+                }
+
+            }
+            else if (wishlist.DiscountBanner)
+            {
+                //pity doesn't matter
+                //discount gives you 10 pull for cost of 8, so 2 free extra pulls essentially
+                if (wishlist.IsWeapon)
+                {
+                    pullsNeeded = 78;
+                }
+                else
+                {
+                    pullsNeeded = 88;
+                }
+            }
+           
+            return pullsNeeded;
         }
     }
 }

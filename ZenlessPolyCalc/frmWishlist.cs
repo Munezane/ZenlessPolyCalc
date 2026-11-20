@@ -24,6 +24,7 @@ namespace ZenlessPolyCalc
                 LoadWishlistItem();
             }
             main = Main;
+            ttBannerType.SetToolTip(lblBannerType, "Discount banners are rare, where you get the first 10 pulls for the cost of 8 and you are guarranteed to get what you want when you hit hard pity (90 for characters, 80 for weapons)");
         }
 
         private void LoadWishlistItem()
@@ -32,6 +33,9 @@ namespace ZenlessPolyCalc
             chkWeapon.Checked = WishListItem.IsWeapon;
             txtImageOverride.Text = WishListItem.ImageLocation;
             imgCharacterImage.ImageLocation = WishListItem.ImageLocation;
+            //note, can't be both
+            chkNormalBanner.Checked = WishListItem.NormalBanner;
+            chkDiscountBanner.Checked = WishListItem.DiscountBanner;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -39,7 +43,8 @@ namespace ZenlessPolyCalc
             WishListItem.CharacterName = txtName.Text;
             WishListItem.ImageLocation = txtImageOverride.Text;
             WishListItem.IsWeapon = chkWeapon.Checked;
-            //TO DO! Standard/discount banner et!
+            WishListItem.NormalBanner = chkNormalBanner.Checked;
+            WishListItem.DiscountBanner = chkDiscountBanner.Checked;
             configManager.AddWishlistItem(WishListItem);
             main.RefreshWishList();
             this.Close();
@@ -62,7 +67,23 @@ namespace ZenlessPolyCalc
             if (!string.IsNullOrWhiteSpace(openImage.FileName))
             {
                 imgCharacterImage.ImageLocation = openImage.FileName;
-                txtImageOverride.Text =openImage.FileName;
+                txtImageOverride.Text = openImage.FileName;
+            }
+        }
+
+        private void chkNormalBanner_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkNormalBanner.Checked)
+            {
+                chkDiscountBanner.Checked = false;
+            }
+        }
+
+        private void chkDiscountBanner_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkDiscountBanner.Checked)
+            {
+                chkNormalBanner.Checked = false;
             }
         }
     }

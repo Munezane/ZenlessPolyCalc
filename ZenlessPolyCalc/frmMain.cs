@@ -7,9 +7,10 @@ namespace ZenlessPolyCalc
     public partial class frmMain : Form
     {
         ConfigManager configManager = new ConfigManager();
-        PolychromeManager polychromeManager = new PolychromeManager();
+        PolychromeManager polychromeManager;
         public frmMain()
         {
+            polychromeManager = new PolychromeManager(configManager);
             InitializeComponent();
             SetMaxNumericValues();
             SetTooltips();
@@ -30,6 +31,10 @@ namespace ZenlessPolyCalc
             ttEventPolys.SetToolTip(lblRemainingEventPolys, "The remaining possible polychromes listed on the events page");
             ttAssumeShiyuARank.SetToolTip(lblAssumeShiyuARank, "Assume you will always get a max of A rank on Shiyu Defence (so will get 80 less polychromes per Shiyu cycle)");
             ttCurrentTapes.SetToolTip(lblCurrentTapes, "The amount of actual tapes you already have. Not the amount you can buy! But just what you currently have!");
+            ttCurrentCharacterPity.SetToolTip(lblCurrentCharacterPity, "The amount of pulls you've spent on the character banner since your last S rank");
+            ttCurrentWeaponPity.SetToolTip(lblCurrentWeaponPity, "The amount of pulls you've spent on the weapon banner since your last S rank");
+            ttWonLastCharacterRateUp.SetToolTip(chkWonCharacterRateUp, "Did you get the rate up character the last time you got an S rank on the character banner?");
+            ttWonLastWeaponRateUp.SetToolTip(chkWonWeaponRateUp, "Did you get the rate up weapon the last time you got an S rank on the weapon banner?");
         }
         private void LoadSavedSettings()
         {
@@ -39,6 +44,10 @@ namespace ZenlessPolyCalc
             numRemainingEventPolys.Value = configManager.RemainingEventPolychromes;
             chkAssumeShiyuARank.Checked = configManager.AssumeShiyuARank;
             dtPatchEndDate.Value = configManager.PatchEndDate;
+            numCurrentCharacterPity.Value = configManager.CurrentCharacterPity;
+            numCurrentWeaponPity.Value = configManager.CurrentWeaponPity;
+            chkWonWeaponRateUp.Checked = configManager.WonLastWeaponRateUp;
+            chkWonCharacterRateUp.Checked = configManager.WonLastCharacterRateUp;
         }
         private void SaveSettings()
         {
@@ -47,6 +56,10 @@ namespace ZenlessPolyCalc
             configManager.RemainingEventPolychromes = ((int)numRemainingEventPolys.Value);
             configManager.AssumeShiyuARank = chkAssumeShiyuARank.Checked;
             configManager.PatchEndDate = dtPatchEndDate.Value;
+            configManager.CurrentCharacterPity = (int)numCurrentCharacterPity.Value;
+            configManager.CurrentWeaponPity = (int)numCurrentWeaponPity.Value;
+            configManager.WonLastCharacterRateUp = chkWonCharacterRateUp.Checked;
+            configManager.WonLastWeaponRateUp = chkWonWeaponRateUp.Checked;
             configManager.SaveConfig();
         }
 
@@ -58,7 +71,7 @@ namespace ZenlessPolyCalc
         private void btnCalcFinalPolys_Click(object sender, EventArgs e)
         {
             SaveSettings(); //save any changes first
-            PolychromeResultDTO results = polychromeManager.CalculateResults(configManager);
+            PolychromeResultDTO results = polychromeManager.CalculateResults();
             lblFinalPolysResult.Text = results.TotalPolychromes.ToString();
             lblFinalPullsResult.Text = results.TotalPulls.ToString();
         }
@@ -84,21 +97,19 @@ namespace ZenlessPolyCalc
                 {
                     listViewItem.Text += "'s (WEAPON)";
                 }
-                //TO DO! HANDLE REST
+                //icon
                 if (!string.IsNullOrWhiteSpace(wishlistItem.ImageLocation))
                 {
-                    if (lstWishlist.LargeImageList == null)
-                    {
-                        lstWishlist.LargeImageList = new ImageList();
-                    }
                     if (lstWishlist.SmallImageList == null)
                     {
                         lstWishlist.SmallImageList = new ImageList();
                     }
-                    lstWishlist.LargeImageList.Images.Add(wishlistItem.ID, Image.FromFile(wishlistItem.ImageLocation));
                     lstWishlist.SmallImageList.Images.Add(wishlistItem.ID, Image.FromFile(wishlistItem.ImageLocation));
                     listViewItem.ImageKey = wishlistItem.ID;
                 }
+                //show how many pulls you need
+                listViewItem.Text = $"{listViewItem.Text} | NEED {polychromeManager.PullsNeededForWishlistItem(wishlistItem)} PULLS";
+
                 lstWishlist.Items.Add(listViewItem);
             }
         }
@@ -119,7 +130,7 @@ namespace ZenlessPolyCalc
         }
         private void DeleteSelectedWishlistItem()
         {
-            
+
             if (lstWishlist.SelectedItems.Count > 0)
             {
                 ListViewItem selectedItem = lstWishlist.SelectedItems[0]; //selection mode is single so can't have multiple selected
@@ -130,11 +141,11 @@ namespace ZenlessPolyCalc
                     DialogResult result = MessageBox.Show($"Are you sure you want to delete {selectedWishlistItem.CharacterName}?", "Confirm Delete", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
-                        configManager.WishlistItems.Remove(configManager.WishlistItems.Where(x=> x.ID == selectedWishlistItem.ID).SingleOrDefault());
+                        configManager.WishlistItems.Remove(configManager.WishlistItems.Where(x => x.ID == selectedWishlistItem.ID).SingleOrDefault());
                         configManager.SaveWishlistItems(configManager.WishlistItems);
                         RefreshWishList();
                     }
-                }  
+                }
             }
         }
         private void cmsWishlistItemRightClick_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -153,6 +164,12 @@ namespace ZenlessPolyCalc
                         break;
                 }
             }
+        }
+
+        private void btnRefreshWishlist_Click(object sender, EventArgs e)
+        {
+            SaveSettings();
+            RefreshWishList();
         }
     }
 }

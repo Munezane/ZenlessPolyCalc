@@ -56,10 +56,26 @@
             btnCalcFinalPolys = new Button();
             ttCurrentTapes = new ToolTip(components);
             btnAddToWishlist = new Button();
+            lblCurrentCharacterPity = new Label();
+            toolTip1 = new ToolTip(components);
+            toolTip2 = new ToolTip(components);
+            ttCurrentCharacterPity = new ToolTip(components);
+            lblCurrentWeaponPity = new Label();
+            ttCurrentWeaponPity = new ToolTip(components);
+            numCurrentCharacterPity = new NumericUpDown();
+            numCurrentWeaponPity = new NumericUpDown();
+            chkWonCharacterRateUp = new CheckBox();
+            ttWonLastCharacterRateUp = new ToolTip(components);
+            chkWonWeaponRateUp = new CheckBox();
+            ttWonLastWeaponRateUp = new ToolTip(components);
+            btnRefreshWishlist = new Button();
+            lblRefreshWishlist = new Label();
             cmsWishlistItemRightClick.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numCurrentTapes).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numCurrentPolys).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numRemainingEventPolys).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numCurrentCharacterPity).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numCurrentWeaponPity).BeginInit();
             SuspendLayout();
             // 
             // lblEndDate
@@ -73,13 +89,13 @@
             // 
             // lstWishlist
             // 
-            lstWishlist.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            lstWishlist.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lstWishlist.ContextMenuStrip = cmsWishlistItemRightClick;
             lstWishlist.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lstWishlist.Location = new Point(782, 44);
+            lstWishlist.Location = new Point(555, 44);
             lstWishlist.MultiSelect = false;
             lstWishlist.Name = "lstWishlist";
-            lstWishlist.Size = new Size(284, 551);
+            lstWishlist.Size = new Size(511, 551);
             lstWishlist.TabIndex = 2;
             lstWishlist.UseCompatibleStateImageBehavior = false;
             lstWishlist.View = View.List;
@@ -147,7 +163,7 @@
             // 
             // lblWishlist
             // 
-            lblWishlist.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            lblWishlist.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblWishlist.AutoSize = true;
             lblWishlist.Location = new Point(782, 14);
             lblWishlist.Name = "lblWishlist";
@@ -266,6 +282,7 @@
             // 
             // btnAddToWishlist
             // 
+            btnAddToWishlist.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnAddToWishlist.Location = new Point(836, 12);
             btnAddToWishlist.Name = "btnAddToWishlist";
             btnAddToWishlist.Size = new Size(75, 23);
@@ -274,12 +291,93 @@
             btnAddToWishlist.UseVisualStyleBackColor = true;
             btnAddToWishlist.Click += btnAddToWishlist_Click;
             // 
+            // lblCurrentCharacterPity
+            // 
+            lblCurrentCharacterPity.AutoSize = true;
+            lblCurrentCharacterPity.Location = new Point(21, 465);
+            lblCurrentCharacterPity.Name = "lblCurrentCharacterPity";
+            lblCurrentCharacterPity.Size = new Size(178, 15);
+            lblCurrentCharacterPity.TabIndex = 23;
+            lblCurrentCharacterPity.Text = "Current character banner pity (?)";
+            // 
+            // lblCurrentWeaponPity
+            // 
+            lblCurrentWeaponPity.AutoSize = true;
+            lblCurrentWeaponPity.Location = new Point(21, 499);
+            lblCurrentWeaponPity.Name = "lblCurrentWeaponPity";
+            lblCurrentWeaponPity.Size = new Size(171, 15);
+            lblCurrentWeaponPity.TabIndex = 24;
+            lblCurrentWeaponPity.Text = "Current weapon banner pity (?)";
+            // 
+            // numCurrentCharacterPity
+            // 
+            numCurrentCharacterPity.Location = new Point(205, 463);
+            numCurrentCharacterPity.Maximum = new decimal(new int[] { 90, 0, 0, 0 });
+            numCurrentCharacterPity.Name = "numCurrentCharacterPity";
+            numCurrentCharacterPity.Size = new Size(120, 23);
+            numCurrentCharacterPity.TabIndex = 25;
+            // 
+            // numCurrentWeaponPity
+            // 
+            numCurrentWeaponPity.Location = new Point(198, 497);
+            numCurrentWeaponPity.Maximum = new decimal(new int[] { 80, 0, 0, 0 });
+            numCurrentWeaponPity.Name = "numCurrentWeaponPity";
+            numCurrentWeaponPity.Size = new Size(120, 23);
+            numCurrentWeaponPity.TabIndex = 26;
+            // 
+            // chkWonCharacterRateUp
+            // 
+            chkWonCharacterRateUp.AutoSize = true;
+            chkWonCharacterRateUp.Location = new Point(331, 463);
+            chkWonCharacterRateUp.Name = "chkWonCharacterRateUp";
+            chkWonCharacterRateUp.Size = new Size(174, 19);
+            chkWonCharacterRateUp.TabIndex = 27;
+            chkWonCharacterRateUp.Text = "Got last character rate up (?)";
+            chkWonCharacterRateUp.UseVisualStyleBackColor = true;
+            // 
+            // chkWonWeaponRateUp
+            // 
+            chkWonWeaponRateUp.AutoSize = true;
+            chkWonWeaponRateUp.Location = new Point(324, 498);
+            chkWonWeaponRateUp.Name = "chkWonWeaponRateUp";
+            chkWonWeaponRateUp.Size = new Size(167, 19);
+            chkWonWeaponRateUp.TabIndex = 28;
+            chkWonWeaponRateUp.Text = "Got last weapon rate up (?)";
+            chkWonWeaponRateUp.UseVisualStyleBackColor = true;
+            // 
+            // btnRefreshWishlist
+            // 
+            btnRefreshWishlist.Location = new Point(186, 549);
+            btnRefreshWishlist.Name = "btnRefreshWishlist";
+            btnRefreshWishlist.Size = new Size(113, 23);
+            btnRefreshWishlist.TabIndex = 29;
+            btnRefreshWishlist.Text = "Refresh Wishlist";
+            btnRefreshWishlist.UseVisualStyleBackColor = true;
+            btnRefreshWishlist.Click += btnRefreshWishlist_Click;
+            // 
+            // lblRefreshWishlist
+            // 
+            lblRefreshWishlist.AutoSize = true;
+            lblRefreshWishlist.Location = new Point(21, 553);
+            lblRefreshWishlist.Name = "lblRefreshWishlist";
+            lblRefreshWishlist.Size = new Size(159, 15);
+            lblRefreshWishlist.TabIndex = 30;
+            lblRefreshWishlist.Text = "Update Wishlist pulls needed";
+            // 
             // frmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Window;
             ClientSize = new Size(1078, 607);
+            Controls.Add(lblRefreshWishlist);
+            Controls.Add(btnRefreshWishlist);
+            Controls.Add(chkWonWeaponRateUp);
+            Controls.Add(chkWonCharacterRateUp);
+            Controls.Add(numCurrentWeaponPity);
+            Controls.Add(numCurrentCharacterPity);
+            Controls.Add(lblCurrentWeaponPity);
+            Controls.Add(lblCurrentCharacterPity);
             Controls.Add(btnAddToWishlist);
             Controls.Add(btnCalcFinalPolys);
             Controls.Add(lblCalculatePolys);
@@ -307,6 +405,8 @@
             ((System.ComponentModel.ISupportInitialize)numCurrentTapes).EndInit();
             ((System.ComponentModel.ISupportInitialize)numCurrentPolys).EndInit();
             ((System.ComponentModel.ISupportInitialize)numRemainingEventPolys).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numCurrentCharacterPity).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numCurrentWeaponPity).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -341,5 +441,19 @@
         private ContextMenuStrip cmsWishlistItemRightClick;
         private ToolStripMenuItem contextEdit;
         private ToolStripMenuItem contextDelete;
+        private Label lblCurrentCharacterPity;
+        private ToolTip toolTip1;
+        private ToolTip toolTip2;
+        private ToolTip ttCurrentCharacterPity;
+        private Label lblCurrentWeaponPity;
+        private ToolTip ttCurrentWeaponPity;
+        private NumericUpDown numCurrentCharacterPity;
+        private NumericUpDown numCurrentWeaponPity;
+        private CheckBox chkWonCharacterRateUp;
+        private ToolTip ttWonLastCharacterRateUp;
+        private CheckBox chkWonWeaponRateUp;
+        private ToolTip ttWonLastWeaponRateUp;
+        private Button btnRefreshWishlist;
+        private Label lblRefreshWishlist;
     }
 }
