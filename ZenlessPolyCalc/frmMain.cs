@@ -95,10 +95,10 @@ namespace ZenlessPolyCalc
                 listViewItem.Text = wishlistItem.CharacterName;
                 if (wishlistItem.IsWeapon)
                 {
-                    listViewItem.Text += "'s (WEAPON)";
+                    listViewItem.Text += "'s WEAPON";
                 }
                 //icon
-                if (!string.IsNullOrWhiteSpace(wishlistItem.ImageLocation))
+                if (!string.IsNullOrWhiteSpace(wishlistItem.ImageLocation) && File.Exists(wishlistItem.ImageLocation))
                 {
                     if (lstWishlist.SmallImageList == null)
                     {

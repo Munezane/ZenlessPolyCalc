@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Text;
 using System.Windows.Forms;
 using ZenlessPolyCalc.Config;
@@ -23,8 +24,17 @@ namespace ZenlessPolyCalc
                 WishListItem = SavedItem;
                 LoadWishlistItem();
             }
+            else
+            {
+                LoadDefaults();
+            }
             main = Main;
             ttBannerType.SetToolTip(lblBannerType, "Discount banners are rare, where you get the first 10 pulls for the cost of 8 and you are guarranteed to get what you want when you hit hard pity (90 for characters, 80 for weapons)");
+        }
+
+        private void LoadDefaults()
+        {
+            chkNormalBanner.Checked = true;
         }
 
         private void LoadWishlistItem()
@@ -40,14 +50,29 @@ namespace ZenlessPolyCalc
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            WishListItem.CharacterName = txtName.Text;
-            WishListItem.ImageLocation = txtImageOverride.Text;
-            WishListItem.IsWeapon = chkWeapon.Checked;
-            WishListItem.NormalBanner = chkNormalBanner.Checked;
-            WishListItem.DiscountBanner = chkDiscountBanner.Checked;
-            configManager.AddWishlistItem(WishListItem);
-            main.RefreshWishList();
-            this.Close();
+            bool validationPassed = true;
+            if (string.IsNullOrWhiteSpace(txtName.Text))
+            {
+                MessageBox.Show("Name is required");
+                validationPassed = false;
+            }
+            if (!chkNormalBanner.Checked && !chkDiscountBanner.Checked)//if both are unchecked somehow
+            {
+                MessageBox.Show("Banner type is required");
+                validationPassed = false;
+            }
+
+            if (validationPassed)
+            {
+                WishListItem.CharacterName = txtName.Text;
+                WishListItem.ImageLocation = txtImageOverride.Text;
+                WishListItem.IsWeapon = chkWeapon.Checked;
+                WishListItem.NormalBanner = chkNormalBanner.Checked;
+                WishListItem.DiscountBanner = chkDiscountBanner.Checked;
+                configManager.AddWishlistItem(WishListItem);
+                main.RefreshWishList();
+                this.Close();
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

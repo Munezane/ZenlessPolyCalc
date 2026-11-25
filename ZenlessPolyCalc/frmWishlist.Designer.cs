@@ -212,6 +212,7 @@
             Text = "Wishlist";
             ((System.ComponentModel.ISupportInitialize)imgCharacterImage).EndInit();
             ResumeLayout(false);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             PerformLayout();
         }
 
