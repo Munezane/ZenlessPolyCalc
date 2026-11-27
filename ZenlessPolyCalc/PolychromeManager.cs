@@ -56,6 +56,8 @@ namespace ZenlessPolyCalc
             }
             results.TotalPolychromes += shiyusLeft * tempShiyuPolychromes;
 
+            //events!
+            results.TotalPolychromes += configManager.RemainingEventPolychromes;
 
             return results;
         }
